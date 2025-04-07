@@ -2,9 +2,9 @@
     <table class="my-table">
       <tbody>
         <tr v-for="item in items" :key="item.indicator" @click="emitItemData(item)">
-          <td>{{ item.indicator }}</td>
-          <td>{{ formatNumber(item.today) }}</td>
-          <td :class="{positiveBack: getPercentChange(item) > 0 , negativeBack: getPercentChange(item) < 0}">
+          <td data-label="Показатель">{{ item.indicator }}</td>
+          <td data-label="Текущий день">{{ formatNumber(item.today) }}</td>
+          <td :class="{positiveBack: getPercentChange(item) > 0 , negativeBack: getPercentChange(item) < 0}" data-label="Вчера">
             <div class="flex-cell">
               <span>{{ formatNumber(item.yesterday) }}</span>
               <span class="percent" :class="{ positive: getPercentChange(item) > 0, negative: getPercentChange(item) < 0 }">
@@ -12,7 +12,7 @@
               </span>
             </div>
           </td>
-          <td>{{ formatNumber(item.TodayDayWeek) }}</td>
+          <td data-label="На прошлой неделе">>{{ formatNumber(item.TodayDayWeek) }}</td>
         </tr>
       </tbody>
     </table>
@@ -104,5 +104,54 @@ const emitItemData = (item) => {
 
 .positiveBack {
     background-color: #4caf4f4e;
+}
+
+@media (max-width: 768px) {
+  .my-table {
+    border-spacing: 5px;
+    font-size: 14px;
+  }
+  
+  .my-table td {
+    padding: 6px 10px;
+  }
+  
+  .flex-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .percent {
+    margin-left: 0;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .my-table tr {
+    display: inline-block;
+    min-width: 200px;
+    vertical-align: top;
+    margin-right: 10px;
+  }
+  
+  .my-table td {
+    display: block;
+    text-align: right;
+    padding: 8px 10px;
+  }
+  
+  .my-table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
 }
 </style>
